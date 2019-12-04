@@ -1,0 +1,8 @@
+DateTime==4.3
+pkg-resources==0.0.0
+PyMySQL==0.9.3
+python-dateutil==2.8.1
+python-dotenv==0.10.3
+pytz==2019.3
+six==1.13.0
+zope.interface==4.7.1
