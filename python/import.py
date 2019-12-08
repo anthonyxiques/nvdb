@@ -11,7 +11,6 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # Read JSON file
-# file = os.path.relpath('.') + "/sample.json"
 file = os.path.relpath('.') + "/data/sample.json"
 json_data = open(file).read()
 json_data_obj = json.loads(json_data)

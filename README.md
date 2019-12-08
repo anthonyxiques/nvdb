@@ -1,15 +1,14 @@
 # nvdb
 
-## About
-
-Dec 2019
-ISM6218 - Group 2
-Gomez, Pedro
-Phillips, Eddie
-Sanchez, Sasha
-Xiques, Anthony
+## ISM6218 @ USF - Group 2 (Dec 2019)
+- Gomez, Pedro
+- Phillips, Eddie
+- Sanchez, Sasha
+- Xiques, Anthony
 
 ##  Python
+
+cd python
 
 ### How to activate venv
 
@@ -17,17 +16,15 @@ From https://packaging.python.org/guides/installing-using-pip-and-virtual-enviro
 
 "Before you can start installing or using packages in your virtual environment you’ll need to activate it. Activating a virtual environment will put the virtual environment-specific python and pip executables into your shell’s PATH."
 
-source python/env/bin/activate
+source env/bin/activate
 
 ### Install dependencies from requirements.txt
-
-cd python
 
 pip install -r requirements.txt
 
 ### Run import script
 
-python3 python/import.py
+python3 import.py
 
 ### Install a new package
 
