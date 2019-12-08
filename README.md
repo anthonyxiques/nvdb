@@ -25,7 +25,11 @@ cd python
 
 pip install -r requirements.txt
 
-### Install package
+### Run import script
+
+python3 python/import.py
+
+### Install a new package
 
 Example: installing requests package
 

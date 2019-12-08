@@ -12,7 +12,7 @@ load_dotenv()
 
 # Read JSON file
 # file = os.path.relpath('.') + "/sample.json"
-file = os.path.relpath('.') + "/nvdcve-1.1-2019.json"
+file = os.path.relpath('.') + "/data/sample.json"
 json_data = open(file).read()
 json_data_obj = json.loads(json_data)
 cves = json_data_obj['CVE_Items']
@@ -50,7 +50,7 @@ for i, item in enumerate(cves):
 
     if isinstance(reference_data, list) and(len(reference_data) > 0):
       link = reference_data[0].get('url')
-    else :
+    else:
       link = ''
 
     ts = time.time()
@@ -63,22 +63,23 @@ for i, item in enumerate(cves):
 
       if 'cpe_match' in node:
         cpe_string = validate_string(node.get('cpe_match', {})[0].get('cpe23Uri'))
-      else :
+      else:
         cpe_string = validate_string(node.get('children', {})[0].get('cpe_match', {})[0].get('cpe23Uri'))
 
       cpe = cpe_string.split(':')
 
       vendor = cpe[3]
       product = cpe[4]
-    else :
+    else:
       vendor = ''
       product = ''
 
     score = item.get("impact", {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore')
 
-    cursor.execute("INSERT IGNORE INTO cves (id, published_date, last_modified_date, created_at, description, link, vendor, product, score) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, published_date, last_modified_date, timestamp, description, link, vendor, product, score))
+    cursor.execute("INSERT IGNORE INTO cves (id, published_date, last_modified_date, created_at, description, link, product, score) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, published_date, last_modified_date, timestamp, description, link, product, score))
   except:
-    print(id, "could not be imported")
+    print("Unexpected error:", sys.exc_info())
+    cursor.execute("INSERT IGNORE INTO failed_imports (id, failed__created_at) VALUES (%s, %s)", (id, timestamp))
     continue
 con.commit()
 con.close()
