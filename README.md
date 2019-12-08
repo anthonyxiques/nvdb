@@ -6,6 +6,12 @@
 - Sanchez, Sasha
 - Xiques, Anthony
 
+## MySQL
+
+### View recently imported cves
+
+`select * from nvdb.cves order by created_at desc limit 1000;`
+
 ##  Python
 
 cd python
