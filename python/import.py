@@ -25,6 +25,19 @@ def validate_string(val):
     else :
       return val
 
+# return id of row if it already exists, create if it doesn't exist
+def first_or_create_vendor(connection, curs, vendor_name):
+  curs.execute("SELECT * from vendors where vendor_name = %s", (vendor_name))
+  res = curs.fetchone()
+  if (res is None):
+    curs.execute("INSERT INTO vendors SET vendor_name = %s ON DUPLICATE KEY UPDATE id=LAST_INSERT_ID(id)", (vendor_name))
+    connection.commit()
+    curs.execute("SELECT LAST_INSERT_ID()")
+    res = curs.fetchone()
+    return res[0]   
+  else:
+    return res[0]
+    
 # MySQL connection
 DB_HOST = os.getenv("DB_HOST")
 DB_USER = os.getenv("DB_USER")
@@ -70,13 +83,15 @@ for i, item in enumerate(cves):
 
       vendor = cpe[3]
       product = cpe[4]
+
+      vendor_id = first_or_create_vendor(con, cursor, vendor)
     else:
       vendor = ''
       product = ''
 
     score = item.get("impact", {}).get('baseMetricV3', {}).get('cvssV3', {}).get('baseScore')
 
-    cursor.execute("INSERT IGNORE INTO cves (id, published_date, last_modified_date, created_at, description, link, product, score) VALUES (%s, %s, %s, %s, %s, %s, %s, %s)", (id, published_date, last_modified_date, timestamp, description, link, product, score))
+    cursor.execute("INSERT IGNORE INTO cves (id, published_date, last_modified_date, created_at, description, link, vendor_id, product, score) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)", (id, published_date, last_modified_date, timestamp, description, link, vendor_id, product, score))
   except:
     print("Unexpected error:", sys.exc_info())
     cursor.execute("INSERT IGNORE INTO failed_imports (id, failed__created_at) VALUES (%s, %s)", (id, timestamp))
