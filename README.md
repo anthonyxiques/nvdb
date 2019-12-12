@@ -50,6 +50,7 @@ deactivate
 
 ### Set up cron job to run import.sh hourly
 `0 * * * * sh ~/import.sh 2>&1 | /usr/bin/logger -t import_recent_cves`
+`0 17 * * * sh ~/notify.sh 2>&1 | /usr/bin/logger -t notify`
 
 ## Logging
 Cron log is set up through papertrailapp.com
