@@ -32,6 +32,10 @@ pip install -r requirements.txt
 
 python3 import.py
 
+### Run notify script
+
+python3 notify.py
+
 ### Install a new package
 
 Example: installing requests package
