@@ -24,7 +24,7 @@ cursor = con.cursor()
 
 # get list of cves published in the last 24 hours
 # each cve is only returned if at least one user is subscribed to the related vendor
-cursor.execute("SELECT uv.user_id, c.id, v.vendor_name, c.published_date, c.link from users_vendors uv left join cves c on uv.vendor_id = c.vendor_id inner join vendors v on uv.vendor_id = v.id where c.processed <> 1 and c.published_date >= now() - INTERVAL 1 DAY")
+cursor.execute("SELECT uv.user_id, c.id, v.vendor_name, c.published_date, c.link from users_vendors uv left join cves c on uv.vendor_id = c.vendor_id inner join vendors v on uv.vendor_id = v.id where c.processed is null and c.published_date >= now() - INTERVAL 1 DAY")
 res = cursor.fetchall()
 
 # group by user (email address)
@@ -61,7 +61,7 @@ for email, cves in cvesByEmail:
     print(str(e))
 
 # set processed = 1 for cves published in the last 24 hours
-cursor.execute("UPDATE cves SET processed=1 WHERE processed <> 1 and published_date >= now() - INTERVAL 1 DAY")
+cursor.execute("UPDATE cves SET processed=1 WHERE processed is null and published_date >= now() - INTERVAL 1 DAY")
 
 con.commit()
 con.close()
